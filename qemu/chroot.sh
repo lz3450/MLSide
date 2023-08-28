@@ -1,19 +1,34 @@
 #!/usr/bin/bash
 
-set -x
+set -e
+# set -x
 
-mkdir -p ubuntu2004
+mountpoint=ubuntu2004
+mkdir -p "$mountpoint"
 
-sudo losetup -P /dev/loop0 ubuntu2004.img
-sudo mount /dev/loop0p2 ubuntu2004
-sudo mount /dev/loop0p1 ubuntu2004/boot/efi
+loopdev=$(sudo losetup -fP --show ubuntu2004.img)
+sudo mount ${loopdev}p2 "$mountpoint"
 
-sudo mkdir -p ubuntu2004/run/systemd/resolve
-sudo cp /etc/resolv.conf ubuntu2004/run/systemd/resolve/stub-resolv.conf
+# Check if the mount was successful
+if mountpoint -q "$mountpoint"; then
+    echo "Successfully mounted ${loopdev}p2 to $mountpoint"
+else
+    echo "Failed to mount ${loopdev}p2 to $mountpoint"
+    # Detach the loop device if mount fails to clean up
+    sudo losetup -d $loopdev
+    exit 1
+fi
+sudo mount ${loopdev}p1 "$mountpoint"/boot/efi
 
-sudo chroot ubuntu2004/ /bin/zsh
+# 
+sudo mkdir -p "$mountpoint"/run/systemd/resolve
+sudo cp /etc/resolv.conf "$mountpoint"/run/systemd/resolve/stub-resolv.conf
 
-sudo umount -R ubuntu2004
-rmdir ubuntu2004
+sudo chroot "$mountpoint"/ /bin/zsh
 
-sudo losetup -d /dev/loop0
+sleep 1
+sudo umount -R "$mountpoint"
+sleep 1
+rmdir "$mountpoint"
+sleep 1
+sudo losetup -d "$loopdev"

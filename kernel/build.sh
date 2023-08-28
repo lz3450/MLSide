@@ -20,7 +20,7 @@ make O=build nconfig
 cp build/.config ../config
 
 # build
-make O=build all
+make O=build -j $(nproc) all
 
 # install
 kernelrelease=$(make O=build -s kernelrelease)

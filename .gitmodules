@@ -1,3 +1,6 @@
 [submodule "mlside-step"]
 	path = mlside-step
 	url = https://gitlab.com/s3lab-code/private/research/aivault/mlside-step.git
+[submodule "linux"]
+	path = kernel/linux
+	url = https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git

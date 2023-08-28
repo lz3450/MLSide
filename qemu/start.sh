@@ -7,4 +7,5 @@ taskset -c 0-15 qemu-system-x86_64 \
     -M sgx-epc.0.memdev=mem1 \
     -bios /usr/share/ovmf/OVMF.fd \
     -drive file=./ubuntu2004.img,index=0,media=disk,format=raw \
-    -nic user,hostfwd=tcp::2222-:22
+    -nic user,hostfwd=tcp::2222-:22 \
+    -s

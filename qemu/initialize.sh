@@ -20,7 +20,8 @@ apt install -y \
     openssh-server \
     zsh \
     nano \
-    git
+    git \
+    gdb gdbserver
 apt upgrade -y
 
 dpkg-reconfigure locales

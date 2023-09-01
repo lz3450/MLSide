@@ -1,0 +1,2 @@
+CompileFlags:
+  Remove: [-mpreferred-stack-boundary=*, -mindirect-branch=thunk-extern, -mindirect-branch-register, -mindirect-branch-cs-prefix, -mfunction-return=thunk-extern, -fno-allow-store-data-races, -fconserve-stack]
